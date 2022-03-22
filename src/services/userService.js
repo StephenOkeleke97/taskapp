@@ -7,14 +7,15 @@ const logoutAPI = host + "logout";
 const requestTimeout = 10000;
 
 class UserService {
-    authenticate(success) {
+    authenticate(authenticate, usercredentials) {
         axios.post(authenticateAPI, null, {
             withCredentials: true,
             timeout: requestTimeout,
         })
         .then((response) => {
             if (response.status === 200) {
-                success(response.data);
+                authenticate();
+                usercredentials(response.data);
             }
         })
         .catch((error) => {
@@ -34,8 +35,9 @@ class UserService {
             if (response.status === 200) success();
         })
         .catch((error) => {
+            if (error.response) failure(error.response.data);
+            else failure();
             console.log(error);
-            failure();
         })
     }
 
@@ -48,11 +50,12 @@ class UserService {
             timeout: requestTimeout,
         })
         .then((response) => {
-            if (response.status === 200) success(response.data);
+            if (response.status === 200) success();
         })
         .catch((error) => {
+            if (error.response) failure(error.response.data);
+            else failure();
             console.log(error);
-            failure();
         })
     }
 

@@ -10,7 +10,7 @@ const cors = require("cors");
 const app = express();
 const TWO_HOURS = 1000 * 60 * 60 * 2;
 const corsOptions = {
-  origin: "*",
+  origin: "http://localhost:3000",
   credentials: true,
   methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
 };
@@ -117,9 +117,9 @@ app.post("/login", redirectHome, (req, res) => {
       .then((result) => {
         if (result) {
           req.session.userId = result._id;
-          res.status(200).send(result);
+          res.sendStatus(200);
         } else {
-          res.sendStatus(401);
+          res.status(401).send("Invalid username or password");
         }
       })
       .catch((error) => {

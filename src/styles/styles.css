@@ -6,6 +6,10 @@
   font-family: "Open Sans", sans-serif;
 }
 
+body {
+  position: relative;
+}
+
 .homeContainer {
   display: flex;
   min-height: 100vh;
@@ -83,4 +87,85 @@
 
 .loginButtonContainer {
   padding-top: 20px;
+}
+
+.signupSwitchContainer {
+  text-align: center;
+  padding: 15px 0;
+  font-size: 11px;
+  color: #767777;
+}
+
+.signupSwitch {
+  color: #0260e8;
+  cursor: pointer;
+}
+
+/* LOADING */
+
+.loadingContainer {
+  position: fixed;
+  width: 150px;
+  height: 150px;
+  background-color: rgba(145, 143, 143, 0.356);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loader {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 14px;
+}
+
+/* FEEDBACK */
+
+.feedbackContainer {
+  position: fixed;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 70%;
+  min-width: 200px;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.feedbackIconContainer,
+.feedbackTextContainer {
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.feedbackIconContainer {
+  border-right: 1px solid #b9b9b9;
+}
+
+.feedbackTextContainer {
+  font-size: 13px;
+}
+
+.failureFeedback {
+  background-color: #ffdfdc;
+  color: #525151;
+}
+
+.successFeedback {
+  background-color: #f1fee7;
+  color: #008736;
+}
+
+.successFeedback .feedbackTextContainer {
+  width: 100%;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
 }

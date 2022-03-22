@@ -4,9 +4,12 @@ import {
   AiFillEye,
   AiFillEyeInvisible,
 } from "react-icons/ai";
+import { useSelector } from "react-redux";
+import useAuthenticate from "../authentication/useAuthenticate";
+import UserService from "../services/UserService";
 import Button from "./Button";
-import { css } from "@emotion/react";
-import ClipLoader from "react-spinners/ClipLoader";
+import Feedback from "./Feedback";
+import Loading from "./Loading";
 
 const iconSize = 17;
 const LoginForm = () => {
@@ -17,6 +20,15 @@ const LoginForm = () => {
   const [passwordIsError, setPasswordIsError] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [loadingAction, setLoadingAction] = useState("");
+  const [isLogIn, setIsLogin] = useState(true);
+  const [showFeedback, setShowFeedback] = useState(false);
+  const [feedbackText, setFeedbackText] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
+  const auth = useAuthenticate();
+  const authenticated = useSelector((state) => state.authenticate.value);
+  console.log(authenticated);
 
   function getPasswordType(isVisible) {
     if (isVisible) return "text";
@@ -24,19 +36,63 @@ const LoginForm = () => {
   }
 
   function onSubmit() {
-      if (!username.trim() || !password) {
-          setUsernameIsError(!username.trim());
-          setPasswordIsError(!password);
-          return;
-      } 
-      console.log("Submitted");
+    if (!username.trim() || !password) {
+      setUsernameIsError(!username.trim());
+      setPasswordIsError(!password);
+      return;
+    }
+    setLoadingAction("Logging in...");
+    setLoading(true);
+    if (isLogIn) handleSignIn(username.trim(), password);
+    else handleSignUp(username.trim(), password);
+  }
+
+  function handleSignUp(username, password) {
+    const success = () => {
+      setLoading(false);
+      feedback("Success", true);
+    };
+
+    const failure = (
+      message = "Something went wrong. Please try again later"
+    ) => {
+      setLoading(false);
+      feedback(message, false);
+    };
+    UserService.register(username, password, success, failure);
+  }
+
+  function handleSignIn(username, password) {
+      const success = () => {
+          setLoading(false);
+          feedback("Success", true);
+          auth();
+      }
+
+      const failure = (message = "Something went wrong. Please try again later") => {
+          setLoading(false);
+          feedback(message, false);
+      }
+      UserService.login(username, password, success, failure);
+  }
+
+  function handleSwitchMode(isLogIn) {
+    setIsLogin(isLogIn);
+  }
+
+  function feedback(text, isSuccess) {
+    setFeedbackText(text);
+    setIsSuccess(isSuccess);
+    setShowFeedback(true);
+
+    setTimeout(() => {
+      setShowFeedback(false);
+    }, 3000);
   }
 
   return (
     <div>
-    <ClipLoader loading={true}/>
-      <h1>Sign in with username</h1>
-
+      <h1>{isLogIn ? "Sign in with username" : "Sign up for a new account"}</h1>
       <div className="loginFormContainer">
         <div
           className="loginInputContainer"
@@ -98,9 +154,41 @@ const LoginForm = () => {
         {passwordIsError && <p className="errorText">Password is required</p>}
 
         <div className="loginButtonContainer">
-                <Button text={"Continue"} onclick={onSubmit}/>
+          <Button text={"Continue"} onclick={onSubmit} />
+        </div>
+
+        <div className="signupSwitchContainer">
+          {isLogIn ? (
+            <p>
+              Don't have an account? Sign up
+              <span
+                className="signupSwitch"
+                onClick={() => handleSwitchMode(false)}
+              >
+                {" "}
+                here
+              </span>
+            </p>
+          ) : (
+            <p>
+              Already a member? Sign in
+              <span
+                className="signupSwitch"
+                onClick={() => handleSwitchMode(true)}
+              >
+                {" "}
+                here
+              </span>
+            </p>
+          )}
         </div>
       </div>
+      <Loading loading={loading} text={loadingAction} />
+      <Feedback
+        text={feedbackText}
+        isSuccess={isSuccess}
+        isVisible={showFeedback}
+      />
     </div>
   );
 };
