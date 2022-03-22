@@ -1,0 +1,86 @@
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  font-family: "Open Sans", sans-serif;
+}
+
+.homeContainer {
+  display: flex;
+  min-height: 100vh;
+}
+
+.homeLeftPane {
+  width: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginContainer {
+  min-width: 50%;
+  min-height: 40%;
+}
+
+.loginContainer h1 {
+  font-weight: 500;
+  font-size: 25px;
+}
+
+.homeRightPane {
+  width: 50%;
+  background-image: url("/public/loginlanding.jpg");
+  background-position: center;
+  background-size: cover;
+}
+
+.loginFormContainer {
+  padding: 10px 0;
+}
+
+.loginInputContainer {
+  border: 1px solid #e6e7e7;
+  padding: 5px;
+  color: #767777;
+  margin-top: 15px;
+}
+
+.loginInputContainer > div {
+  display: flex;
+}
+
+.loginInputContainer p {
+  font-size: 10px;
+  padding-bottom: 5px;
+}
+
+.loginInput {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.formIcons {
+  cursor: pointer;
+}
+
+.errorText {
+  font-size: 9px;
+  color: red;
+}
+
+.loginButton {
+  background-color: #002d6d;
+  color: #fff;
+  text-align: center;
+  padding: 12px 0;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.loginButtonContainer {
+  padding-top: 20px;
+}
