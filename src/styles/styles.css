@@ -321,10 +321,12 @@ body {
 
 .taskPane {
   padding: 80px;
+  width: 800px;
 }
 
 .taskHeader h1 {
   font-size: 22px;
+  font-weight: 500;
 }
 
 .newTaskContainer {
@@ -333,4 +335,44 @@ body {
 
 .taskButtonContainer {
   padding-top: 30px;
+}
+
+.tasks {
+  padding-top: 5px;
+}
+
+.task {
+  display: flex;
+  padding: 20px;
+  border-bottom: 1px solid #e6e4e4;
+  color: #525151;
+  cursor: pointer;
+}
+
+.task:hover {
+  background-color: #e6e4e4;
+}
+
+.activeTask {
+  background-color: #e6e4e4;
+}
+
+.task p:first-child {
+  margin-right: 30px;
+}
+
+.taskItemContent {
+  padding-top: 20px;
+}
+
+.addButton {
+  background-color: #7677773d;
+  width: fit-content;
+  padding: 2px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.taskInput {
+  width: 100%;
 }

@@ -27,6 +27,8 @@ const Chat = () => {
   const [newTask, setNewTask] = useState(false);
   const [user, setUser] = useState();
   const [tasks, setTasks] = useState([]);
+  const [taskItems, setTaskItems] = useState([]);
+  const [activeTask, setActiveTask] = useState(null);
 
   useEffect(() => {
     console.log(authenticated);
@@ -136,9 +138,10 @@ const Chat = () => {
               <input className="searchInput" placeholder="Search for chats" />
             </div>
           </div>
-          <div>
+          <div className="tasks">
             {tasks.map((task, index) => {
-              return <Tasks task={task} key={index} />;
+              return <Tasks task={task} key={index} setTaskItems={setTaskItems}
+              setActiveTask={setActiveTask} activeTask={activeTask}/>;
             })}
           </div>
         </div>
@@ -150,7 +153,7 @@ const Chat = () => {
         />
       </div>
       <div className="taskPane">
-        <TaskItems />
+        {activeTask && <TaskItems items={taskItems}/>}
       </div>
       <Feedback
         text={feedbackText}
