@@ -1,10 +1,11 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   AiFillCheckCircle,
   AiFillEye,
   AiFillEyeInvisible,
 } from "react-icons/ai";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import useAuthenticate from "../authentication/useAuthenticate";
 import UserService from "../services/UserService";
 import Button from "./Button";
@@ -28,7 +29,22 @@ const LoginForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const auth = useAuthenticate();
   const authenticated = useSelector((state) => state.authenticate.value);
-  console.log(authenticated);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (authenticated.toString() === "true") navigate("/chat");
+  });
+
+  useEffect(() => {
+    function handleEnter(event) {
+      if (event.key === "Enter") onSubmit();
+    }
+    document.addEventListener("keypress", handleEnter);
+
+    return () => {
+      document.removeEventListener("keypress", handleEnter);
+    }
+  });
 
   function getPasswordType(isVisible) {
     if (isVisible) return "text";

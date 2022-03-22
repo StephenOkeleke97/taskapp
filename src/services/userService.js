@@ -14,12 +14,13 @@ class UserService {
         })
         .then((response) => {
             if (response.status === 200) {
-                authenticate();
+                authenticate(true);
                 usercredentials(response.data);
             }
         })
         .catch((error) => {
             console.log(error);
+            authenticate(false);
         })
     }
 
@@ -70,7 +71,7 @@ class UserService {
         .catch((error) => {
             console.log(error);
             failure();
-        })
+        });
     }
 }
 

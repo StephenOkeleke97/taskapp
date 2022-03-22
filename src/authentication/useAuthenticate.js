@@ -6,8 +6,8 @@ import UserService from "../services/UserService";
 const useAuthenticate = () => {
     const dispatch = useDispatch();
 
-    function handleAuthenticated() {
-        dispatch(setAuthState(true));
+    function handleAuthenticated(isAuthenticated) {
+        dispatch(setAuthState(isAuthenticated));
     }
 
     function handleUser(data) {

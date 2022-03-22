@@ -169,3 +169,132 @@ body {
   justify-content: center;
   font-weight: 600;
 }
+
+/* CHAT */
+
+.chatContainer {
+  min-height: 100vh;
+  display: flex;
+}
+
+.chatSideBar {
+  width: 400px;
+  border-right: 1px solid #f3f2f2;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.sideBarNav {
+  padding: 7px 20px;
+  background-color: #eff2f5;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.rightAlinedIcons {
+  display: flex;
+  align-items: center;
+}
+
+.userProfilePicture {
+  height: 40px;
+  width: 40px;
+}
+
+.optionsButtonContainer {
+  margin-left: 15px;
+  height: 40px;
+  width: 40px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.2s;
+}
+
+.optionsButton {
+  position: relative;
+}
+
+.newChatButton,
+.optionsButton {
+  cursor: pointer;
+}
+
+.options {
+  position: absolute;
+  top: 160%;
+  right: 0;
+  width: 180px;
+  padding: 5px 0;
+  transform: scale(1);
+  font-size: 14px;
+  background-color: #fff;
+  box-shadow: 2px 2px 5px #b8b8b8;
+  cursor: default;
+  transform: scale(0);
+  transition: transform 0.1s ease;
+}
+
+.optionsOpen {
+  background-color: #7677772f;
+}
+
+.optionsOpen .options {
+  transform: scale(1);
+}
+
+.optionItems {
+  padding: 10px 15px;
+}
+
+.optionItems:hover {
+  background-color: #eeeeee;
+  cursor: pointer;
+}
+
+.sideBarContent {
+  flex-grow: 1;
+  overflow: scroll;
+}
+
+.searchContainer {
+  padding: 8px 15px;
+  border-bottom: 1px solid #f3f2f2;
+}
+
+.searchBox {
+  background-color: #eff2f5;
+  padding: 8px 15px;
+  display: flex;
+  align-items: center;
+  border-radius: 8px;
+}
+
+.searchInput {
+  margin-left: 20px;
+  border: none;
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0);
+  outline: none;
+}
+
+.hiddenSideBarContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20px;
+  transform: translateX(-100%);
+  transition: transform 0.2s ease-in-out;
+}
+
+.hiddenVisible {
+  transform: translate(0);
+}
+
+.messageContainer {
+}

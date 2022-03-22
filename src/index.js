@@ -5,11 +5,18 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Chat from "./routes/Chat";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <Router>
+        <Routes>
+          <Route path="/" element={<App/>} />
+          <Route path="/chat" element={<Chat/>} />
+        </Routes>
+      </Router>
     </Provider>
   </React.StrictMode>,
   document.getElementById("root")
