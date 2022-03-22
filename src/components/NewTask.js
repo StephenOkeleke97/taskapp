@@ -11,6 +11,7 @@ const NewTask = ({ visible, onBack, success, failure }) => {
             setIserror(true);
             return;
         }
+        setTaskname("");
         UserService.createTask(taskname, success, failure);
     }
   return (

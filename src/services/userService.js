@@ -7,6 +7,7 @@ const registerAPI = host + "/register";
 const logoutAPI = host + "/logout";
 const getUserAPI = host + "/api/user";
 const createTaskAPI = host + "/tasks";
+const addTaskItemAPI = host + "/taskitem";
 const requestTimeout = 10000;
 
 class UserService {
@@ -99,14 +100,71 @@ class UserService {
         })
         .then((response) => {
             if (response.status === 200) {
-                console.log(response.data);
-                success();
+                success(response.data);
             }
         })
         .catch((error) => {
             console.log(error);
             failure();
         })
+    }
+
+    addTaskItem(itemname, taskid, success, failure) {
+        axios.post(addTaskItemAPI, {
+            itemname: itemname,
+            taskid: taskid,
+        }, {
+            withCredentials: true,
+            timeout: requestTimeout,
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                success(response.data);
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            failure();
+        })
+    }
+
+    completeTaskItem(taskid, taskitemid, success, failure) {
+        axios.put(addTaskItemAPI, {
+            taskid: taskid,
+            taskitemid: taskitemid,
+        }, {
+            withCredentials: true,
+            timeout: requestTimeout,
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                success();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            failure();
+        });
+    }
+
+    deleteTaskItem(taskid, taskitemid, success, failure) {
+        axios.delete(addTaskItemAPI, {
+            params: {
+                taskid: taskid,
+                taskitemid, taskitemid
+            },
+            withCredentials: true,
+            timeout: requestTimeout,
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                success();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            failure();
+        });
     }
 
 }

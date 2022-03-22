@@ -1,8 +1,7 @@
 import React from 'react'
 
-const Tasks = ({task, setTaskItems, setActiveTask, activeTask }) => {
+const Tasks = ({task, setActiveTask, activeTask }) => {
     function onClick() {
-        setTaskItems(task.taskitems);
         setActiveTask(task);
     }
     const active = task === activeTask;

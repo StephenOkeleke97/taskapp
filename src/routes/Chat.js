@@ -86,12 +86,50 @@ const Chat = () => {
     }, 3000);
   }
 
-  function newTaskSuccessful() {
-    window.location.reload();
+  function newTaskSuccessful(data) {
+    // window.location.reload();
+    const temp = [...tasks];
+    temp.push(data);
+    setTasks(temp);
+    setNewTask(false);
   }
 
   function newTaskError() {
     feedback("Failed to create task.", false);
+  }
+
+  function handleTaskItems(taskid, taskitem) {
+    const temp = [...tasks];
+    temp.forEach(task => {
+      if (task._id = taskid) {
+        task.taskitems.push(taskitem);
+      }
+    });
+    setTasks(temp);
+  }
+
+  function handleDeleteTaskItem(taskid, taskitemid) {
+    const temp = [...tasks];
+    temp.forEach(task => {
+      if (task._id = taskid) {
+        task.taskitems = task.taskitems.filter(item => item._id !== taskitemid);
+      }
+    });
+    setTasks(temp);
+  }
+
+  function handleCompleteTaskItem(taskid, taskitemid) {
+    const temp = [...tasks];
+    temp.forEach(task => {
+      if (task._id = taskid) {
+        task.taskitems.forEach(item => {
+          if (item._id === taskitemid) {
+            item.completed = true;
+          }
+        })
+      }
+    });
+    setTasks(temp);
   }
 
   return (
@@ -140,7 +178,7 @@ const Chat = () => {
           </div>
           <div className="tasks">
             {tasks.map((task, index) => {
-              return <Tasks task={task} key={index} setTaskItems={setTaskItems}
+              return <Tasks task={task} key={index}
               setActiveTask={setActiveTask} activeTask={activeTask}/>;
             })}
           </div>
@@ -153,7 +191,8 @@ const Chat = () => {
         />
       </div>
       <div className="taskPane">
-        {activeTask && <TaskItems items={taskItems}/>}
+        {activeTask && <TaskItems activeTask={activeTask} handleTaskItems={handleTaskItems}
+        handleCompleteTaskItem={handleCompleteTaskItem} handleDeleteTaskItem={handleDeleteTaskItem}/>}
       </div>
       <Feedback
         text={feedbackText}

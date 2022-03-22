@@ -101,6 +101,7 @@ app.use(
 app.use("/api", main);
 
 app.post("/loggedin", (req, res) => {
+  console.log(req.session.userId);
   if (req.session.userId) {
     const user = User.findById(req.session.userId);
     user
@@ -173,14 +174,98 @@ app.post("/tasks", (req, res) => {
 
   const user = findUserById(req.session.userId);
   user.then((result) => {
-    result.tasks.push({
-      taskname: taskname,
-      datecreated: new Date(),
-    });
-    result.save();
-    res.sendStatus(200);
+    if (result) {
+      const id = new mongoose.Types.ObjectId();
+      const date = new Date();
+      result.tasks.push({
+        _id: id,
+        taskname: taskname,
+        datecreated: date,
+      });
+      result.save();
+      res.status(200).send({
+        _id: id,
+        datecreated: date,
+        taskname: taskname,
+        taskitems: [],
+      })
+    }
   })
 
+});
+
+app.post("/taskitem", (req, res) => {
+  if (!req.session.userId) {
+    res.sendStatus(401);
+    return;
+  }
+  const { itemname, taskid } = req.body;
+  const user = findUserById(req.session.userId);
+  user.then((result) => {
+    if (result) {
+      console.log(taskid);
+      const task = result.tasks
+      .filter(task => task._id.valueOf() === taskid)[0];
+      const id = new mongoose.Types.ObjectId();
+      task.taskitems.push({
+        _id: id,
+        item: itemname, 
+        completed: false,
+      });
+      result.save((err, doc) => {
+       if (!err) {
+         res.status(200).send(id);
+       } 
+      });
+    } else {
+      res.sendStatus(400);
+    }
+  });
+  return;
+});
+
+app.put("/taskitem", (req, res) => {
+  if (!req.session.userId) {
+    res.sendStatus(401);
+    return;
+  }
+
+  const { taskid, taskitemid } = req.body;
+  const user = findUserById(req.session.userId);
+  user.then((result) => {
+    if (result) {
+      const task =  result.tasks.filter(task => task._id.valueOf() === taskid)[0];
+      const taskitem = task.taskitems
+      .filter(item => item._id.valueOf() === taskitemid)[0];
+      taskitem.completed = true;
+      result.save();
+      res.sendStatus(200);
+    }
+  });
+  return;
+});
+
+app.delete("/taskitem", (req, res) => {
+  if (!req.session.userId) {
+    res.sendStatus(401);
+    return;
+  }
+
+  const { taskid, taskitemid } = req.query;
+  const user = findUserById(req.session.userId);
+  user.then((result) => {
+    if (result) {
+      const task =  result.tasks.filter(task => task._id.valueOf() === taskid)[0];
+      const taskitems = task.taskitems
+      .filter(item => item._id.valueOf() !== taskitemid);
+      console.log("Task", task.taskitems);
+      console.log("New", taskitems);
+      task.taskitems = taskitems;
+      result.save();
+      res.sendStatus(200);
+    }
+  });
+  return;
 });
 
 app.post("/logout", (req, res) => {

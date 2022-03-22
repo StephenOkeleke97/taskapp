@@ -376,3 +376,33 @@ body {
 .taskInput {
   width: 100%;
 }
+
+.taskItem {
+  display: flex;
+  border-bottom: 1px solid #dfdfdf;
+  padding: 10px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.taskItemStatus {
+  display: flex;
+  align-items: center;
+}
+.taskItemStatus p {
+  margin-left: 40px;
+  font-size: 18px;
+  color: #525151;
+}
+
+.taskItemButtons {
+  display: flex;
+}
+
+.taskItemButtons > div {
+  margin-left: 10px;
+}
+
+.itemButton {
+  cursor: pointer;
+}
