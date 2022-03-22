@@ -193,7 +193,7 @@ body {
   align-items: center;
 }
 
-.rightAlinedIcons {
+.rightAlignedIcons {
   display: flex;
   align-items: center;
 }
@@ -203,8 +203,12 @@ body {
   width: 40px;
 }
 
-.optionsButtonContainer {
-  margin-left: 15px;
+.navButton {
+  margin-left: 10 px;
+}
+
+.optionsButtonContainer,
+.navButton {
   height: 40px;
   width: 40px;
   border-radius: 50px;
@@ -216,11 +220,11 @@ body {
 
 .optionsButton {
   position: relative;
+  cursor: pointer;
 }
 
-.newChatButton,
-.optionsButton {
-  cursor: pointer;
+.inviteUserButton {
+  position: relative;
 }
 
 .options {
@@ -238,7 +242,8 @@ body {
   transition: transform 0.1s ease;
 }
 
-.optionsOpen {
+.optionsOpen,
+.activeButton {
   background-color: #7677772f;
 }
 
@@ -287,14 +292,45 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 20px;
   transform: translateX(-100%);
   transition: transform 0.2s ease-in-out;
+  background-color: #fff;
 }
 
 .hiddenVisible {
   transform: translate(0);
 }
 
-.messageContainer {
+.hiddenSideBarHeader {
+  display: flex;
+  align-items: center;
+  padding: 50px 20px 20px 20px;
+  background-color: #052555;
+  color: #fff;
+}
+
+.hiddenSideBarHeader h1 {
+  margin-left: 20px;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.hiddenSideBarBackArrow {
+  cursor: pointer;
+}
+
+.taskPane {
+  padding: 80px;
+}
+
+.taskHeader h1 {
+  font-size: 22px;
+}
+
+.newTaskContainer {
+  padding: 20px;
+}
+
+.taskButtonContainer {
+  padding-top: 30px;
 }

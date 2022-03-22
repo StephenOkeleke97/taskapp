@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from "react";
-import { BsFillChatLeftTextFill } from "react-icons/bs";
 import { FiMoreVertical } from "react-icons/fi";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -7,8 +6,14 @@ import UserService from "../services/UserService";
 import Feedback from "../components/Feedback";
 import Loading from "../components/Loading";
 import { AiOutlineSearch } from "react-icons/ai";
+import useAuthenticate from "../authentication/useAuthenticate";
+import TaskItems from "../components/TaskItems";
+import NewTask from "../components/NewTask";
+import Tasks from "../components/Tasks";
 
 const Chat = () => {
+  const auth = useAuthenticate();
+  const userId = useSelector((state) => state.user.value).id;
   const [feedbackText, setFeedbackText] = useState("");
   const [showFeedback, setShowFeedback] = useState(false);
   const [feedbackIsSuccess, setFeedbackIsSuccess] = useState(false);
@@ -19,10 +24,21 @@ const Chat = () => {
   const [optionsVisible, setOptionsVisible] = useState(false);
   const authenticated = useSelector((state) => state.authenticate.value);
   const navigate = useNavigate();
+  const [newTask, setNewTask] = useState(false);
+  const [user, setUser] = useState();
+  const [tasks, setTasks] = useState([]);
 
   useEffect(() => {
-    if (!authenticated) navigate("/");
+    console.log(authenticated);
+    if (authenticated.toString() !== "true") navigate("/");
   }, [authenticated]);
+
+  useEffect(() => {
+    UserService.getUser((data) => {
+      setUser(user);
+      setTasks(data.tasks);
+    });
+  }, [userId]);
 
   useEffect(() => {
     function handleClickOutside(event) {
@@ -31,10 +47,10 @@ const Chat = () => {
       }
     }
 
-    document.addEventListener("click", handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener("click", handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -43,7 +59,7 @@ const Chat = () => {
     setLoading(true);
     const success = () => {
       setLoading(false);
-      navigate("/");
+      auth();
     };
 
     const failure = () => {
@@ -68,6 +84,14 @@ const Chat = () => {
     }, 3000);
   }
 
+  function newTaskSuccessful() {
+    window.location.reload();
+  }
+
+  function newTaskError() {
+    feedback("Failed to create task.", false);
+  }
+
   return (
     <div className="chatContainer">
       <div className="chatSideBar">
@@ -80,13 +104,9 @@ const Chat = () => {
               height={"100%"}
             />
           </div>
-          <div className="rightAlinedIcons">
-            <div className="newChatButton">
-              <BsFillChatLeftTextFill color="#58595B" size={navIconSize} />
-            </div>
-
+          <div className="rightAlignedIcons">
             <div
-              className={`optionsButtonContainer
+              className={`optionsButtonContainer navButton
              ${optionsVisible && "optionsOpen"}`}
             >
               <div
@@ -96,12 +116,8 @@ const Chat = () => {
               >
                 <FiMoreVertical color="#58595B" size={navIconSize} />
                 <div className="options">
-                  <div className="optionItems">
-                    <p>New Group</p>
-                  </div>
-
-                  <div className="optionItems" onClick={handleLogout}>
-                    <p>Invitations</p>
+                  <div className="optionItems" onClick={() => setNewTask(true)}>
+                    <p>New Task</p>
                   </div>
 
                   <div className="optionItems" onClick={handleLogout}>
@@ -116,15 +132,26 @@ const Chat = () => {
         <div className="sideBarContent">
           <div className="searchContainer">
             <div className="searchBox">
-              <AiOutlineSearch color="#58595B"/>
-              <input className="searchInput" 
-              placeholder="Search for chats"/>
+              <AiOutlineSearch color="#58595B" />
+              <input className="searchInput" placeholder="Search for chats" />
             </div>
           </div>
+          <div>
+            {tasks.map((task, index) => {
+              return <Tasks task={task} key={index} />;
+            })}
+          </div>
         </div>
+        <NewTask
+          visible={newTask}
+          onBack={setNewTask}
+          success={newTaskSuccessful}
+          failure={newTaskError}
+        />
       </div>
-      <div className="messageContainer"></div>
-
+      <div className="taskPane">
+        <TaskItems />
+      </div>
       <Feedback
         text={feedbackText}
         isVisible={showFeedback}

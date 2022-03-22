@@ -1,9 +1,12 @@
 import axios from "axios";
-const host = "http://localhost:5100/";
-const loginAPI = host + "login";
-const authenticateAPI = host + "loggedin";
-const registerAPI = host + "register";
-const logoutAPI = host + "logout";
+
+const host = "http://localhost:5100";
+const loginAPI = host + "/login";
+const authenticateAPI = host + "/loggedin";
+const registerAPI = host + "/register";
+const logoutAPI = host + "/logout";
+const getUserAPI = host + "/api/user";
+const createTaskAPI = host + "/tasks";
 const requestTimeout = 10000;
 
 class UserService {
@@ -73,6 +76,39 @@ class UserService {
             failure();
         });
     }
+
+    getUser(success) {
+        axios.get(getUserAPI, {
+            withCredentials: true,
+            timeout: requestTimeout,
+        })
+        .then(response => {
+            if (response.status === 200) success(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    createTask(taskname, success, failure) {
+        axios.post(createTaskAPI, {
+            "taskname": taskname,
+        }, {
+            withCredentials: true,
+            timeout: requestTimeout
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                console.log(response.data);
+                success();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            failure();
+        })
+    }
+
 }
 
 export default new UserService();

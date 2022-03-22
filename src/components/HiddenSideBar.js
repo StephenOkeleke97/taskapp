@@ -1,12 +1,13 @@
 import React from 'react';
 import { BiArrowBack } from "react-icons/bi";
 
-const HiddenSideBar = ({ name, visible, children }) => {
+const HiddenSideBar = ({ name, visible, onBack, children }) => {
   return (
-    <div className='hiddenSideBarContainer'>
+    <div className={`hiddenSideBarContainer ${visible && "hiddenVisible"}`}>
         <div className='hiddenSideBarHeader'>
-            <BiArrowBack/>
-            <p>{name}</p>
+            <BiArrowBack className='hiddenSideBarBackArrow' 
+            onClick={() => onBack(false)}/>
+            <h1>{name}</h1>
         </div>
         {children}
     </div>

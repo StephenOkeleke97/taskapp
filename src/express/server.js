@@ -6,14 +6,14 @@ const MongoStore = require("connect-mongo");
 const bodyParser = require("body-parser");
 const { User } = require("./schema/schema");
 const cors = require("cors");
-
-const app = express();
-const TWO_HOURS = 1000 * 60 * 60 * 2;
 const corsOptions = {
+  cors: true,
   origin: "http://localhost:3000",
   credentials: true,
-  methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
 };
+const app = express();
+
+const TWO_HOURS = 1000 * 60 * 60 * 2;
 
 const {
   PORT = 5100,
@@ -47,6 +47,11 @@ async function findUser(username, password) {
     username: username,
     password: password,
   });
+  return user;
+}
+
+async function findUserById(id) {
+  const user = await User.findById(id);
   return user;
 }
 
@@ -96,18 +101,20 @@ app.use(
 app.use("/api", main);
 
 app.post("/loggedin", (req, res) => {
-    if (req.session.userId) {
-        const user = User.findById(req.session.userId);
-        user.then((result) => {
-            if (result) res.send(result);
-        }).catch((error) => {
-            console.log(error);
-            res.sendStatus(500);
-        })
-        return;
-    }
-    res.sendStatus(401);
-})
+  if (req.session.userId) {
+    const user = User.findById(req.session.userId);
+    user
+      .then((result) => {
+        if (result) res.send(result);
+      })
+      .catch((error) => {
+        console.log(error);
+        res.sendStatus(500);
+      });
+    return;
+  }
+  res.sendStatus(401);
+});
 
 app.post("/login", redirectHome, (req, res) => {
   const { username, password } = req.body;
@@ -152,12 +159,37 @@ app.post("/register", redirectHome, (req, res) => {
   }
 });
 
+app.post("/tasks", (req, res) => {
+  if (!req.session.userId) {
+    res.sendStatus(401);
+    return
+  }
+
+  const { taskname } = req.body;
+  if (!taskname) {
+    res.sendStatus(400);
+    return;
+  }
+
+  const user = findUserById(req.session.userId);
+  user.then((result) => {
+    result.tasks.push({
+      taskname: taskname,
+      datecreated: new Date(),
+    });
+    result.save();
+    res.sendStatus(200);
+  })
+
+});
+
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) res.clearCookie(SESS_NAME);
     res.send("Success");
   });
 });
+
 
 app.listen(PORT, () => {
   console.log("App listening on port", PORT);

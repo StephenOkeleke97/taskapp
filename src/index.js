@@ -7,10 +7,12 @@ import { Provider } from "react-redux";
 import store from "./redux/store/store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Chat from "./routes/Chat";
+import Authenticate from "./authentication/Authenticate";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
+      <Authenticate/>
       <Router>
         <Routes>
           <Route path="/" element={<App/>} />
