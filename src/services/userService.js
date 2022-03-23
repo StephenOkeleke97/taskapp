@@ -200,8 +200,7 @@ class UserService {
       .delete(addTaskItemAPI, {
         params: {
           taskid: taskid,
-          taskitemid,
-          taskitemid,
+          taskitemid: taskitemid,
         },
         withCredentials: true,
         timeout: requestTimeout,

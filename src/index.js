@@ -8,6 +8,7 @@ import store from "./redux/store/store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Task from "./routes/Task";
 import Authenticate from "./authentication/Authenticate";
+import NotFound from "./routes/NotFound";
 
 ReactDOM.render(
   <React.StrictMode>
@@ -17,6 +18,7 @@ ReactDOM.render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/task" element={<Task />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
     </Provider>

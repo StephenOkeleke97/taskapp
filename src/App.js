@@ -1,4 +1,3 @@
-import useAuthenticate from "./authentication/useAuthenticate";
 import Home from "./routes/Home";
 import "./styles/styles.css";
 

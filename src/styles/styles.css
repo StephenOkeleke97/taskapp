@@ -430,3 +430,15 @@ body {
   font-size: 13px;
   color: #525151;
 }
+.notFoundContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 200px;
+}
+
+.notFoundContainer p {
+  font-size: 30px;
+  margin-top: 20px;
+}
