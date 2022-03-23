@@ -8,7 +8,7 @@ const logoutAPI = host + "/logout";
 const getUserAPI = host + "/api/user";
 const createTaskAPI = host + "/tasks";
 const addTaskItemAPI = host + "/taskitem";
-const requestTimeout = 10000;
+const requestTimeout = 120000;
 
 class UserService {
   authenticate(authenticate, usercredentials) {
