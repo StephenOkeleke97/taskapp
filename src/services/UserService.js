@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const host = "https://taskappbysteveserver.herokuapp.com/";
+const host = "https://taskappbysteveserver.herokuapp.com";
 const loginAPI = host + "/login";
 const authenticateAPI = host + "/loggedin";
 const registerAPI = host + "/register";
