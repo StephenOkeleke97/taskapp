@@ -1,11 +1,9 @@
-import useAuthenticate from './authentication/useAuthenticate';
-import Home from './routes/Home';
-import './styles/styles.css';
+import useAuthenticate from "./authentication/useAuthenticate";
+import Home from "./routes/Home";
+import "./styles/styles.css";
 
 function App() {
-  return (
-    <Home/>
-  );
+  return <Home />;
 }
 
 export default App;

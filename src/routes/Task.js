@@ -11,7 +11,7 @@ import TaskItems from "../components/TaskItems";
 import NewTask from "../components/NewTask";
 import Tasks from "../components/Tasks";
 
-const Chat = () => {
+const Task = () => {
   const auth = useAuthenticate();
   const userId = useSelector((state) => state.user.value).id;
   const [feedbackText, setFeedbackText] = useState("");
@@ -27,7 +27,7 @@ const Chat = () => {
   const [newTask, setNewTask] = useState(false);
   const [user, setUser] = useState();
   const [tasks, setTasks] = useState([]);
-  const [searchedTasks, setSearchedTasks] = useState("")
+  const [searchedTasks, setSearchedTasks] = useState("");
   const [activeTask, setActiveTask] = useState(null);
 
   useEffect(() => {
@@ -117,13 +117,10 @@ const Chat = () => {
     const temp = [...tasks];
     temp.forEach((task) => {
       if (task._id === taskid) {
-        console.log(task.taskitems);
         const filtered = task.taskitems.filter(
           (item) => item._id !== taskitemid
         );
         task.taskitems = filtered;
-
-        console.log(task.taskitems);
       }
     });
     setTasks([...temp]);
@@ -154,8 +151,8 @@ const Chat = () => {
   }
 
   return (
-    <div className="chatContainer">
-      <div className="chatSideBar">
+    <div className="taskMainContainer">
+      <div className="taskSideBar">
         <div className="sideBarNav">
           <div className="userProfilePicture">
             <img
@@ -194,11 +191,14 @@ const Chat = () => {
           <div className="searchContainer">
             <div className="searchBox">
               <AiOutlineSearch color="#58595B" />
-              <input className="searchInput" placeholder="Search for tasks" 
-              value={searchedTasks}
-              onChange={(e) => {
-                setSearchedTasks(e.target.value);
-              }}/>
+              <input
+                className="searchInput"
+                placeholder="Search for tasks"
+                value={searchedTasks}
+                onChange={(e) => {
+                  setSearchedTasks(e.target.value);
+                }}
+              />
             </div>
           </div>
           <div className="tasks">
@@ -207,18 +207,23 @@ const Chat = () => {
                 <p>No tasks to show</p>
               </div>
             ) : (
-              tasks.filter(task => task.taskname.toLowerCase().includes(searchedTasks.toLowerCase()))
-              .map((task, index) => {
-                return (
-                  <Tasks
-                    task={task}
-                    key={task._id}
-                    setActiveTask={handleSwitchTask}
-                    activeTask={activeTask}
-                    handleDeleteTask={handleDeleteTask}
-                  />
-                );
-              })
+              tasks
+                .filter((task) =>
+                  task.taskname
+                    .toLowerCase()
+                    .includes(searchedTasks.toLowerCase())
+                )
+                .map((task, index) => {
+                  return (
+                    <Tasks
+                      task={task}
+                      key={task._id}
+                      setActiveTask={handleSwitchTask}
+                      activeTask={activeTask}
+                      handleDeleteTask={handleDeleteTask}
+                    />
+                  );
+                })
             )}
           </div>
         </div>
@@ -249,4 +254,4 @@ const Chat = () => {
   );
 };
 
-export default Chat;
+export default Task;

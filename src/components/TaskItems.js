@@ -7,7 +7,12 @@ import {
 import { BiTrashAlt } from "react-icons/bi";
 import UserService from "../services/UserService";
 
-const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handleDeleteTaskItem }) => {
+const TaskItems = ({
+  activeTask,
+  handleTaskItems,
+  handleCompleteTaskItem,
+  handleDeleteTaskItem,
+}) => {
   const [taskname, setTaskname] = useState("");
   const [tasknameIsError, setTasknameIsError] = useState(false);
 
@@ -36,19 +41,29 @@ const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handle
   };
 
   function handleDelete(taskitemid) {
-    UserService.deleteTaskItem(activeTask._id, taskitemid, () => {
-      handleDeleteTaskItem(activeTask._id, taskitemid);
-    }, () => {
-      console.log("failed");
-    })
+    UserService.deleteTaskItem(
+      activeTask._id,
+      taskitemid,
+      () => {
+        handleDeleteTaskItem(activeTask._id, taskitemid);
+      },
+      () => {
+        console.log("failed");
+      }
+    );
   }
 
   function handleComplete(taskitemid) {
-    UserService.completeTaskItem(activeTask._id, taskitemid, () => {
-     handleCompleteTaskItem(activeTask._id, taskitemid);
-    }, () => {
-      console.log("failed");
-    })
+    UserService.completeTaskItem(
+      activeTask._id,
+      taskitemid,
+      () => {
+        handleCompleteTaskItem(activeTask._id, taskitemid);
+      },
+      () => {
+        console.log("failed");
+      }
+    );
   }
 
   return (
@@ -78,7 +93,7 @@ const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handle
       <div className="taskItemContent">
         {activeTask.taskitems.length <= 0 ? (
           <div className="emptyTaskContainer">
-           <p>No task items</p>
+            <p>No task items</p>
           </div>
         ) : (
           <div>
@@ -96,13 +111,17 @@ const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handle
                   <div className="taskItemButtons">
                     {!item.completed && (
                       <div className="completeButton itemButton">
-                        <AiOutlineCheck color="#41B619" 
-                        onClick={() => handleComplete(item._id)}/>
+                        <AiOutlineCheck
+                          color="#41B619"
+                          onClick={() => handleComplete(item._id)}
+                        />
                       </div>
                     )}
 
-                    <div className="deleteButton itemButton"
-                    onClick={() => handleDelete(item._id)}>
+                    <div
+                      className="deleteButton itemButton"
+                      onClick={() => handleDelete(item._id)}
+                    >
                       <BiTrashAlt color="red" />
                     </div>
                   </div>

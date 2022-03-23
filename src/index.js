@@ -6,17 +6,17 @@ import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import store from "./redux/store/store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Chat from "./routes/Chat";
+import Task from "./routes/Task";
 import Authenticate from "./authentication/Authenticate";
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <Authenticate/>
+      <Authenticate />
       <Router>
         <Routes>
-          <Route path="/" element={<App/>} />
-          <Route path="/chat" element={<Chat/>} />
+          <Route path="/" element={<App />} />
+          <Route path="/task" element={<Task />} />
         </Routes>
       </Router>
     </Provider>

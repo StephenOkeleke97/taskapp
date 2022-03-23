@@ -170,14 +170,14 @@ body {
   font-weight: 600;
 }
 
-/* CHAT */
+/* TASK */
 
-.chatContainer {
+.taskMainContainer {
   min-height: 100vh;
   display: flex;
 }
 
-.chatSideBar {
+.taskSideBar {
   width: 400px;
   border-right: 1px solid #f3f2f2;
   display: flex;

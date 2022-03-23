@@ -9,7 +9,7 @@ const userSchema = new mongoose.Schema({
       datecreated: { type: Date },
       taskitems: [
         {
-          item: { type: String, unique: true },
+          item: { type: String },
           completed: { type: Boolean },
         },
       ],

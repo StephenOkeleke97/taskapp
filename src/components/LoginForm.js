@@ -35,11 +35,11 @@ const LoginForm = () => {
   useEffect(() => {
     return () => {
       isMounted = false;
-    }
+    };
   });
 
   useEffect(() => {
-    if (authenticated.toString() === "true") navigate("/chat");
+    if (authenticated.toString() === "true") navigate("/task");
   });
 
   useEffect(() => {
@@ -50,7 +50,7 @@ const LoginForm = () => {
 
     return () => {
       document.removeEventListener("keypress", handleEnter);
-    }
+    };
   });
 
   function getPasswordType(isVisible) {
@@ -86,17 +86,19 @@ const LoginForm = () => {
   }
 
   function handleSignIn(username, password) {
-      const success = () => {
-          setLoading(false);
-          feedback("Success", true);
-          auth();
-      }
+    const success = () => {
+      setLoading(false);
+      feedback("Success", true);
+      auth();
+    };
 
-      const failure = (message = "Something went wrong. Please try again later") => {
-          setLoading(false);
-          feedback(message, false);
-      }
-      UserService.login(username, password, success, failure);
+    const failure = (
+      message = "Something went wrong. Please try again later"
+    ) => {
+      setLoading(false);
+      feedback(message, false);
+    };
+    UserService.login(username, password, success, failure);
   }
 
   function handleSwitchMode(isLogIn) {
@@ -109,8 +111,7 @@ const LoginForm = () => {
     setShowFeedback(true);
 
     setTimeout(() => {
-      if (isMounted)
-        setShowFeedback(false);
+      if (isMounted) setShowFeedback(false);
     }, 3000);
   }
 

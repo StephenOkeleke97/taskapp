@@ -25,11 +25,4 @@ router.get("/user", (req, res) => {
   return;
 });
 
-// addUser("joe", "1995");
-// async function addUser(name, password) {
-//     const user = new User({username: name, password: password});
-//     await user.save();
-//     console.log("saved");
-// }
-
 module.exports = router;
