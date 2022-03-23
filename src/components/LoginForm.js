@@ -30,11 +30,12 @@ const LoginForm = () => {
   const auth = useAuthenticate();
   const authenticated = useSelector((state) => state.authenticate.value);
   const navigate = useNavigate();
-  let isMounted = true;
+  let isMounted = useRef(null);
 
   useEffect(() => {
+    isMounted.current = true;
     return () => {
-      isMounted = false;
+      isMounted.current = false;
     };
   });
 
@@ -111,7 +112,7 @@ const LoginForm = () => {
     setShowFeedback(true);
 
     setTimeout(() => {
-      if (isMounted) setShowFeedback(false);
+      if (isMounted.current) setShowFeedback(false);
     }, 3000);
   }
 
