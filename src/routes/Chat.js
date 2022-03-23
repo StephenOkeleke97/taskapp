@@ -27,7 +27,7 @@ const Chat = () => {
   const [newTask, setNewTask] = useState(false);
   const [user, setUser] = useState();
   const [tasks, setTasks] = useState([]);
-  const [taskItems, setTaskItems] = useState([]);
+  const [searchedTasks, setSearchedTasks] = useState("")
   const [activeTask, setActiveTask] = useState(null);
 
   useEffect(() => {
@@ -194,7 +194,11 @@ const Chat = () => {
           <div className="searchContainer">
             <div className="searchBox">
               <AiOutlineSearch color="#58595B" />
-              <input className="searchInput" placeholder="Search for tasks" />
+              <input className="searchInput" placeholder="Search for tasks" 
+              value={searchedTasks}
+              onChange={(e) => {
+                setSearchedTasks(e.target.value);
+              }}/>
             </div>
           </div>
           <div className="tasks">
@@ -203,7 +207,8 @@ const Chat = () => {
                 <p>No tasks to show</p>
               </div>
             ) : (
-              tasks.map((task, index) => {
+              tasks.filter(task => task.taskname.toLowerCase().includes(searchedTasks.toLowerCase()))
+              .map((task, index) => {
                 return (
                   <Tasks
                     task={task}

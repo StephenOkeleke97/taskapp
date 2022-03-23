@@ -30,6 +30,13 @@ const LoginForm = () => {
   const auth = useAuthenticate();
   const authenticated = useSelector((state) => state.authenticate.value);
   const navigate = useNavigate();
+  let isMounted = true;
+
+  useEffect(() => {
+    return () => {
+      isMounted = false;
+    }
+  });
 
   useEffect(() => {
     if (authenticated.toString() === "true") navigate("/chat");
@@ -102,7 +109,8 @@ const LoginForm = () => {
     setShowFeedback(true);
 
     setTimeout(() => {
-      setShowFeedback(false);
+      if (isMounted)
+        setShowFeedback(false);
     }, 3000);
   }
 
