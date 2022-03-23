@@ -268,6 +268,25 @@ app.delete("/taskitem", (req, res) => {
   return;
 });
 
+app.delete("/tasks", (req, res) => {
+  if (!req.session.userId) {
+    res.sendStatus(401);
+    return;
+  }
+
+  const { taskid } = req.query;
+  const user = findUserById(req.session.userId);
+  user.then((result) => {
+    if (result) {
+      const tasks =  result.tasks.filter(task => task._id.valueOf() !== taskid);
+      result.tasks = tasks;
+      result.save();
+      res.sendStatus(200);
+    }
+  });
+  return;
+});
+
 app.post("/logout", (req, res) => {
   req.session.destroy((err) => {
     if (err) res.clearCookie(SESS_NAME);

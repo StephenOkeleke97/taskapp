@@ -128,6 +128,25 @@ class UserService {
         })
     }
 
+    deleteTask(taskid, success, failure) {
+        axios.delete(createTaskAPI, {
+            params: {
+                taskid: taskid,
+            },
+            withCredentials: true,
+            timeout: requestTimeout,
+        })
+        .then((response) => {
+            if (response.status === 200) {
+                success();
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+            failure();
+        });
+    }
+
     completeTaskItem(taskid, taskitemid, success, failure) {
         axios.put(addTaskItemAPI, {
             taskid: taskid,

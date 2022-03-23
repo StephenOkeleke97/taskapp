@@ -8,7 +8,6 @@ import { BiTrashAlt } from "react-icons/bi";
 import UserService from "../services/UserService";
 
 const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handleDeleteTaskItem }) => {
-  console.log(activeTask);
   const [taskname, setTaskname] = useState("");
   const [tasknameIsError, setTasknameIsError] = useState(false);
 
@@ -78,7 +77,9 @@ const TaskItems = ({ activeTask, handleTaskItems, handleCompleteTaskItem, handle
 
       <div className="taskItemContent">
         {activeTask.taskitems.length <= 0 ? (
-          <p>No task items</p>
+          <div className="emptyTaskContainer">
+           <p>No task items</p>
+          </div>
         ) : (
           <div>
             {activeTask.taskitems.map((item, index) => {

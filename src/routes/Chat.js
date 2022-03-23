@@ -31,15 +31,20 @@ const Chat = () => {
   const [activeTask, setActiveTask] = useState(null);
 
   useEffect(() => {
-    console.log(authenticated);
     if (authenticated.toString() !== "true") navigate("/");
   }, [authenticated]);
 
   useEffect(() => {
+    let isMounted = true;
     UserService.getUser((data) => {
-      setUser(user);
-      setTasks(data.tasks);
+      if (isMounted) {
+        setUser(user);
+        setTasks(data.tasks);
+      }
     });
+    return () => {
+      isMounted = false;
+    };
   }, [userId]);
 
   useEffect(() => {
@@ -100,8 +105,8 @@ const Chat = () => {
 
   function handleTaskItems(taskid, taskitem) {
     const temp = [...tasks];
-    temp.forEach(task => {
-      if (task._id = taskid) {
+    temp.forEach((task) => {
+      if (task._id === taskid) {
         task.taskitems.push(taskitem);
       }
     });
@@ -110,26 +115,42 @@ const Chat = () => {
 
   function handleDeleteTaskItem(taskid, taskitemid) {
     const temp = [...tasks];
-    temp.forEach(task => {
-      if (task._id = taskid) {
-        task.taskitems = task.taskitems.filter(item => item._id !== taskitemid);
+    temp.forEach((task) => {
+      if (task._id === taskid) {
+        console.log(task.taskitems);
+        const filtered = task.taskitems.filter(
+          (item) => item._id !== taskitemid
+        );
+        task.taskitems = filtered;
+
+        console.log(task.taskitems);
+      }
+    });
+    setTasks([...temp]);
+  }
+
+  function handleCompleteTaskItem(taskid, taskitemid) {
+    const temp = [...tasks];
+    temp.forEach((task) => {
+      if (task._id === taskid) {
+        task.taskitems.forEach((item) => {
+          if (item._id === taskitemid) {
+            item.completed = true;
+          }
+        });
       }
     });
     setTasks(temp);
   }
 
-  function handleCompleteTaskItem(taskid, taskitemid) {
-    const temp = [...tasks];
-    temp.forEach(task => {
-      if (task._id = taskid) {
-        task.taskitems.forEach(item => {
-          if (item._id === taskitemid) {
-            item.completed = true;
-          }
-        })
-      }
-    });
+  function handleSwitchTask(task) {
+    setActiveTask(task);
+  }
+
+  function handleDeleteTask(taskid) {
+    const temp = tasks.filter((task) => task._id !== taskid);
     setTasks(temp);
+    if (activeTask._id === taskid) setActiveTask(null);
   }
 
   return (
@@ -173,14 +194,27 @@ const Chat = () => {
           <div className="searchContainer">
             <div className="searchBox">
               <AiOutlineSearch color="#58595B" />
-              <input className="searchInput" placeholder="Search for chats" />
+              <input className="searchInput" placeholder="Search for tasks" />
             </div>
           </div>
           <div className="tasks">
-            {tasks.map((task, index) => {
-              return <Tasks task={task} key={index}
-              setActiveTask={setActiveTask} activeTask={activeTask}/>;
-            })}
+            {tasks.length <= 0 ? (
+              <div className="emptyTaskContainer">
+                <p>No tasks to show</p>
+              </div>
+            ) : (
+              tasks.map((task, index) => {
+                return (
+                  <Tasks
+                    task={task}
+                    key={task._id}
+                    setActiveTask={handleSwitchTask}
+                    activeTask={activeTask}
+                    handleDeleteTask={handleDeleteTask}
+                  />
+                );
+              })
+            )}
           </div>
         </div>
         <NewTask
@@ -191,8 +225,14 @@ const Chat = () => {
         />
       </div>
       <div className="taskPane">
-        {activeTask && <TaskItems activeTask={activeTask} handleTaskItems={handleTaskItems}
-        handleCompleteTaskItem={handleCompleteTaskItem} handleDeleteTaskItem={handleDeleteTaskItem}/>}
+        {activeTask && (
+          <TaskItems
+            activeTask={activeTask}
+            handleTaskItems={handleTaskItems}
+            handleCompleteTaskItem={handleCompleteTaskItem}
+            handleDeleteTaskItem={handleDeleteTaskItem}
+          />
+        )}
       </div>
       <Feedback
         text={feedbackText}
